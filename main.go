@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	listenAddress = flag.String("web.listen-address", ":9121", "Address to listen on for web interface and telemetry.")
+	listenAddress = flag.String("web.listen-address", ":9355", "Address to listen on for web interface and telemetry.")
 	metricPath    = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	sentinelAddr  = flag.String("sentinel.addr", "redis://127.0.0.1:26379", "Redis Sentinel host:port")
 	isDebug       = flag.Bool("debug", false, "Output verbose debug information")
@@ -56,19 +56,4 @@ func main() {
 
 	logrus.Printf("Providing metrics at %s%s", *listenAddress, *metricPath)
 	logrus.Fatal(http.ListenAndServe(*listenAddress, nil))
-
-	// options := []redis.DialOption{
-	// 	redis.DialConnectTimeout(5 * time.Second),
-	// 	redis.DialReadTimeout(5 * time.Second),
-	// 	redis.DialWriteTimeout(5 * time.Second),
-	// }
-	// c, err := redis.DialURL(*sentinelAddr, options...)
-	// if err != nil {
-	// 	logrus.Fatal(err)
-	// }
-	// body, err := redis.String(c.Do("info", "sentinel"))
-	// if err != nil {
-	// 	logrus.Fatal(err)
-	// }
-	// fmt.Println(body)
 }
