@@ -7,4 +7,7 @@ import:
   subpackages:
   - prometheus
   - prometheus/promhttp
+- package: github.com/prometheus/common
+  subpackages:
+  - version
 - package: github.com/sirupsen/logrus

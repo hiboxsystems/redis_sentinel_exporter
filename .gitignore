@@ -1,0 +1,6 @@
+redis_sentinel_exporter
+
+bin/
+package/
+.build
+.tarballs/

@@ -1,5 +1,5 @@
-hash: fed95e9d8d7169dc00e1a0a60f25c5fa576fcf2162164b1ecc6e724ebf8936b1
-updated: 2018-07-31T18:21:34.194126+05:00
+hash: b6defe525ea09de7ce4ff359352893382744f0ec4b175229f53adc0ba1ce8f73
+updated: 2018-07-31T18:33:10.862118+05:00
 imports:
 - name: github.com/beorn7/perks
   version: 3ac7bf7a47d159a033b107610db8a1b6575507a4
@@ -33,6 +33,7 @@ imports:
   - expfmt
   - internal/bitbucket.org/ww/goautoneg
   - model
+  - version
 - name: github.com/prometheus/procfs
   version: 65c1f6f8f0fc1e2185eb9863a3bc751496404259
   subpackages:

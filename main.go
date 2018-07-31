@@ -2,10 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/prometheus/common/version"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,10 +19,16 @@ var (
 	isDebug       = flag.Bool("debug", false, "Output verbose debug information")
 	logFormat     = flag.String("log-format", "txt", "Log format, valid options are txt and json")
 	namespace     = flag.String("namespace", "redis_sentinel", "Namespace for metrics")
+	versionPrint  = flag.Bool("version", false, "Prints version and exit")
 )
 
 func main() {
 	flag.Parse()
+
+	if *versionPrint {
+		fmt.Println(version.Print("redis sentinel exporter"))
+		os.Exit(0)
+	}
 
 	switch *logFormat {
 	case "json":
@@ -27,6 +36,8 @@ func main() {
 	default:
 		logrus.SetFormatter(&logrus.TextFormatter{})
 	}
+
+	logrus.Infof("Starting Redis Sentine Exporter %s...", version.Version)
 
 	if *isDebug {
 		logrus.SetLevel(logrus.DebugLevel)
@@ -45,9 +56,9 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`
 			<html>
-			<head><title>Redis Sentine Exporter</title></head>
+			<head><title>Redis Sentine Exporter ` + version.Version + `</title></head>
 			<body>
-			<h1>Redis Sentinel Exporter</h1>
+			<h1>Redis Sentinel Exporter ` + version.Version + `</h1>
 			<p><a href='` + *metricPath + `'>Metrics</a></p>
 			</body>
 			</html>
