@@ -86,8 +86,8 @@ func parseInfo(info string) *SentinelInfo {
 		}
 		fieldKey := split[0]
 		fieldValue := split[1]
+		// master0:name=mymaster,status=ok,address=172.17.8.101:6379,slaves=2,sentinels=3
 		if strings.HasPrefix(fieldKey, "master") {
-			// name=mymaster,status=ok,address=172.17.8.101:6379,slaves=2,sentinels=3
 			master := pasreMasterInfo(fieldValue)
 			i.MastersList = append(i.MastersList, master)
 			continue
