@@ -1,13 +1,57 @@
 package main
 
 import (
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/sirupsen/logrus"
+)
+
+var (
+	metricBuildInfo = []string{
+		"redis_version",
+		"redis_build_id",
+		"redis_mode",
+	}
+	metricMap = map[string]string{
+		// Server
+		"uptime_in_seconds": "uptime_in_seconds",
+		"process_id":        "process_id",
+		// Clients
+		"connected_clients":          "connected_clients",
+		"client_longest_output_list": "client_longest_output_list",
+		"client_biggest_input_buf":   "client_biggest_input_buf",
+		"blocked_clients":            "blocked_clients",
+		// Stats
+		"total_connections_received": "connections_received_total",
+		"total_commands_processed":   "commands_processed_total",
+		"instantaneous_ops_per_sec":  "instantaneous_ops_per_sec",
+		"total_net_input_bytes":      "net_input_bytes_total",
+		"total_net_output_bytes":     "net_output_bytes_total",
+		"instantaneous_input_kbps":   "instantaneous_input_kbps",
+		"instantaneous_output_kbps":  "instantaneous_output_kbps",
+		"rejected_connections":       "rejected_connections_total",
+		"expired_keys":               "expired_keys_total",
+		"evicted_keys":               "evicted_keys_total",
+		"keyspace_hits":              "keyspace_hits_total",
+		"keyspace_misses":            "keyspace_misses_total",
+		"pubsub_channels":            "pubsub_channels",
+		"pubsub_patterns":            "pubsub_patterns",
+		"latest_fork_usec":           "latest_fork_usec",
+		// CPU
+		"used_cpu_sys":           "used_cpu_sys",
+		"used_cpu_user":          "used_cpu_user",
+		"used_cpu_sys_children":  "used_cpu_sys_children",
+		"used_cpu_user_children": "used_cpu_user_children",
+		// Sentinel
+		"sentinel_masters":                "masters",
+		"sentinel_tilt":                   "tilt",
+		"sentinel_running_scripts":        "running_scripts",
+		"sentinel_scripts_queue_length":   "scripts_queue_length",
+		"sentinel_simulate_failure_flags": "simulate_failure_flags",
+	}
 )
 
 type Exporter struct {
@@ -45,51 +89,38 @@ func NewRedisSentinelExporter(addr, namespace string) *Exporter {
 
 func (e *Exporter) initGauges() {
 	e.metrics = map[string]*prometheus.GaugeVec{}
-	e.metrics["masters"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "masters",
-		Help:      "Total masters",
-	}, []string{})
-	e.metrics["tilt"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "tilt",
-		Help:      "Tilt value",
-	}, []string{})
-	e.metrics["running_scripts"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "running_scripts",
-		Help:      "Number of running scripts",
-	}, []string{})
-	e.metrics["scripts_queue_length"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "scripts_queue_length",
-		Help:      "Length of scripts queue",
-	}, []string{})
-	e.metrics["master_status"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "master_status",
-		Help:      "Status of master",
-	}, []string{"id", "name", "address"})
-	e.metrics["master_slaves"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "master_slaves",
-		Help:      "Slaves of master",
-	}, []string{"id", "name", "address"})
-	e.metrics["master_sentinels"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      "master_sentinels",
-		Help:      "Sentinels of master",
-	}, []string{"id", "name", "address"})
+
 	e.metrics["info"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: e.namespace,
 		Name:      "info",
 		Help:      "Information about Sentinel",
 	}, []string{"version", "build_id", "mode"})
-	e.metrics["uptime_seconds"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+
+	// Masters
+	e.metrics["master_status"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: e.namespace,
-		Name:      "uptime_seconds",
-		Help:      "Sentinel uptime in seconds",
-	}, []string{})
+		Name:      "master_status",
+		Help:      "Status of master",
+	}, []string{"name", "address"})
+	e.metrics["master_slaves"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: e.namespace,
+		Name:      "master_slaves",
+		Help:      "Slaves of master",
+	}, []string{"name", "address"})
+	e.metrics["master_sentinels"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: e.namespace,
+		Name:      "master_sentinels",
+		Help:      "Sentinels of master",
+	}, []string{"name", "address"})
+
+	// All other metrics
+	for metricOrigName, metricOutName := range metricMap {
+		e.metrics[metricOrigName] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Namespace: e.namespace,
+			Name:      metricOutName,
+			Help:      metricOutName,
+		}, []string{})
+	}
 }
 
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
@@ -140,24 +171,28 @@ func (e *Exporter) scrapeInfo() (string, error) {
 	return body, nil
 }
 
-func (e *Exporter) setMetrics(info *SentinelInfo) {
-	e.metrics["info"].WithLabelValues(info.Version, info.BuildID, info.Mode).Set(float64(1))
-	e.metrics["masters"].WithLabelValues().Set(info.Masters)
-	e.metrics["tilt"].WithLabelValues().Set(info.Tilt)
-	e.metrics["running_scripts"].WithLabelValues().Set(info.RunningScripts)
-	e.metrics["scripts_queue_length"].WithLabelValues().Set(info.ScriptsQueueLength)
-	e.metrics["uptime_seconds"].WithLabelValues().Set(info.UptimeInSeconds)
-
-	for _, master := range info.MastersList {
-		e.metrics["master_status"].
-			WithLabelValues(strconv.Itoa(master.ID), master.Name, master.Address).
-			Set(master.StatusAsFloat64())
-		e.metrics["master_slaves"].
-			WithLabelValues(strconv.Itoa(master.ID), master.Name, master.Address).
-			Set(master.Slaves)
-		e.metrics["master_sentinels"].
-			WithLabelValues(strconv.Itoa(master.ID), master.Name, master.Address).
-			Set(master.Sentinels)
+func (e *Exporter) setMetrics(i *SentinelInfo) {
+	for metricName, gauge := range e.metrics {
+		switch metricName {
+		case "info":
+			gauge.WithLabelValues(
+				i.Metrics["redis_version"].(string),
+				i.Metrics["redis_build_id"].(string),
+				i.Metrics["redis_mode"].(string),
+			).Set(float64(1))
+		case "master_status", "master_slaves", "master_sentinels":
+			metricType := strings.TrimPrefix(metricName, "master_")
+			for _, m := range i.Masters {
+				gauge.WithLabelValues(
+					m.Metrics["name"].(string),
+					m.Metrics["address"].(string),
+				).Set(m.Metrics[metricType].(float64))
+			}
+		default:
+			if _, ok := i.Metrics[metricName]; ok {
+				gauge.WithLabelValues().Set(i.Metrics[metricName].(float64))
+			}
+		}
 	}
 }
 
@@ -171,10 +206,14 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	ch <- e.scrapeErrors
 
 	infoRaw, err := e.scrapeInfo()
+	metricRequiredKeys := metricBuildInfo
+	for metricName := range metricMap {
+		metricRequiredKeys = append(metricRequiredKeys, metricName)
+	}
 	if err != nil {
 		errorCount++
 	} else {
-		sentinelInfo := parseInfo(infoRaw)
+		sentinelInfo := parseInfo(infoRaw, metricRequiredKeys, true)
 		e.setMetrics(sentinelInfo)
 	}
 

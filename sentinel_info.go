@@ -7,39 +7,32 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var (
+	masterMetricMap = map[string]string{
+		"name":      "name",
+		"status":    "status",
+		"address":   "address",
+		"slaves":    "slaves",
+		"sentinels": "sentinels",
+	}
+)
+
 type SentinelInfo struct {
-	// Server
-	Version         string
-	BuildID         string
-	Mode            string
-	UptimeInSeconds float64
-	// Sentinel
-	Masters            float64
-	Tilt               float64
-	RunningScripts     float64
-	ScriptsQueueLength float64
-	MastersList        []*Master
+	Metrics map[string]interface{}
+	Masters []*Master
 }
 
 type Master struct {
-	ID        int
-	Name      string
-	Status    string
-	Address   string
-	Slaves    float64
-	Sentinels float64
+	Metrics map[string]interface{}
 }
 
-func (m *Master) StatusAsFloat64() float64 {
-	if m.Status == "ok" {
-		return float64(1)
-	}
-	return float64(0)
-}
-
+// Format:
+// name=mymaster,status=ok,address=172.17.8.101:6379,slaves=2,sentinels=3
 func pasreMasterInfo(info string) *Master {
 	split := strings.Split(info, ",")
-	m := &Master{}
+	m := &Master{
+		Metrics: make(map[string]interface{}),
+	}
 	for _, keyPair := range split {
 		s := strings.Split(keyPair, "=")
 		if len(s) != 2 {
@@ -47,31 +40,32 @@ func pasreMasterInfo(info string) *Master {
 		}
 		fieldKey := s[0]
 		fieldValue := s[1]
-		switch fieldKey {
-		case "name":
-			m.Name = fieldValue
-		case "status":
-			m.Status = fieldValue
-		case "address":
-			m.Address = fieldValue
-		case "slaves":
-			slaves, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				m.Slaves = slaves
+		for metricOriginalName, metricName := range masterMetricMap {
+			if metricOriginalName != fieldKey {
+				continue
 			}
-		case "sentinels":
-			sentinels, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				m.Sentinels = sentinels
-			}
+			m.Metrics[metricName] = parseValue(fieldValue)
 		}
 	}
 	return m
 }
 
-func parseInfo(info string) *SentinelInfo {
+func parseValue(value string) interface{} {
+	if value == "ok" {
+		return float64(1)
+	} else if value == "fail" || value == "down" {
+		return float64(0)
+	} else if val, err := strconv.ParseFloat(value, 64); err == nil {
+		return val
+	}
+	return value
+}
+
+func parseInfo(info string, keys []string, includeMasters bool) *SentinelInfo {
 	lines := strings.Split(info, "\r\n")
-	i := &SentinelInfo{}
+	i := &SentinelInfo{
+		Metrics: make(map[string]interface{}),
+	}
 	for _, line := range lines {
 		if len(line) == 0 {
 			continue
@@ -86,44 +80,16 @@ func parseInfo(info string) *SentinelInfo {
 		}
 		fieldKey := split[0]
 		fieldValue := split[1]
-		// master0:name=mymaster,status=ok,address=172.17.8.101:6379,slaves=2,sentinels=3
-		if strings.HasPrefix(fieldKey, "master") {
+		if strings.HasPrefix(fieldKey, "master") && includeMasters {
 			master := pasreMasterInfo(fieldValue)
-			i.MastersList = append(i.MastersList, master)
+			i.Masters = append(i.Masters, master)
 			continue
 		}
-		switch fieldKey {
-		case "redis_version":
-			i.Version = fieldValue
-		case "redis_build_id":
-			i.BuildID = fieldValue
-		case "redis_mode":
-			i.Mode = fieldValue
-		case "uptime_in_seconds":
-			uptime, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				i.UptimeInSeconds = uptime
+		for _, key := range keys {
+			if key != fieldKey {
+				continue
 			}
-		case "sentinel_masters":
-			masters, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				i.Masters = masters
-			}
-		case "sentinel_tilt":
-			tilt, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				i.Tilt = tilt
-			}
-		case "sentinel_running_scripts":
-			scripts, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				i.RunningScripts = scripts
-			}
-		case "sentinel_scripts_queue_length":
-			scripts, err := strconv.ParseFloat(fieldValue, 64)
-			if err == nil {
-				i.ScriptsQueueLength = scripts
-			}
+			i.Metrics[key] = parseValue(fieldValue)
 		}
 	}
 	return i
