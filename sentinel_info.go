@@ -53,7 +53,7 @@ func pasreMasterInfo(info string) *Master {
 func parseValue(value string) interface{} {
 	if value == "ok" {
 		return float64(1)
-	} else if value == "fail" || value == "down" {
+	} else if value == "fail" || strings.Contains(value, "down") {
 		return float64(0)
 	} else if val, err := strconv.ParseFloat(value, 64); err == nil {
 		return val
