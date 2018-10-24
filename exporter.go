@@ -181,6 +181,7 @@ func (e *Exporter) setMetrics(i *SentinelInfo) {
 				i.Metrics["redis_mode"].(string),
 			).Set(float64(1))
 		case "master_status", "master_slaves", "master_sentinels":
+			gauge.Reset()
 			metricType := strings.TrimPrefix(metricName, "master_")
 			for _, m := range i.Masters {
 				gauge.WithLabelValues(
