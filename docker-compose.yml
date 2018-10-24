@@ -1,0 +1,26 @@
+---
+version: '3.1'
+services:
+  redis-server-1: &redis-server
+    image: redis:latest
+    networks:
+      - redis-sentinel-demo
+    ports:
+      - "6379"
+    hostname: redis-server-1
+  redis-server-2:
+    <<: *redis-server
+    hostname: redis-server-2
+  redis-server-3:
+    <<: *redis-server
+    hostname: redis-server-3
+  redis-sentinel:
+    image: bitnami/redis-sentinel:latest
+    networks:
+      - redis-sentinel-demo
+    ports:
+      - "26379:26379"
+    environment:
+      - REDIS_MASTER_HOST=redis-server-1
+networks:
+  redis-sentinel-demo:
