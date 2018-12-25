@@ -15,3 +15,7 @@ Help on flags:
 ```
 ./redis_sentinel_exporter --help
 ```
+
+## Links
+
+* [Grafana Dashboard](https://grafana.com/dashboards/9570)
