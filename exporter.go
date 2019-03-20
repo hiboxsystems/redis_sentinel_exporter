@@ -214,7 +214,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	if err != nil {
 		errorCount++
 	} else {
-		sentinelInfo := parseInfo(infoRaw, metricRequiredKeys, true)
+		sentinelInfo := ParseInfo(infoRaw, metricRequiredKeys, true)
 		e.setMetrics(sentinelInfo)
 	}
 

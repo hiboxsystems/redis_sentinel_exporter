@@ -1,4 +1,5 @@
 redis_sentinel_exporter
+coverage.out
 
 bin/
 package/

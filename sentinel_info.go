@@ -28,7 +28,7 @@ type Master struct {
 
 // Format:
 // name=mymaster,status=ok,address=172.17.8.101:6379,slaves=2,sentinels=3
-func pasreMasterInfo(info string) *Master {
+func PasreMasterInfo(info string) *Master {
 	split := strings.Split(info, ",")
 	m := &Master{
 		Metrics: make(map[string]interface{}),
@@ -44,13 +44,13 @@ func pasreMasterInfo(info string) *Master {
 			if metricOriginalName != fieldKey {
 				continue
 			}
-			m.Metrics[metricName] = parseValue(fieldValue)
+			m.Metrics[metricName] = ParseValue(fieldValue)
 		}
 	}
 	return m
 }
 
-func parseValue(value string) interface{} {
+func ParseValue(value string) interface{} {
 	if value == "ok" {
 		return float64(1)
 	} else if value == "fail" || strings.Contains(value, "down") {
@@ -61,7 +61,7 @@ func parseValue(value string) interface{} {
 	return value
 }
 
-func parseInfo(info string, keys []string, includeMasters bool) *SentinelInfo {
+func ParseInfo(info string, keys []string, includeMasters bool) *SentinelInfo {
 	lines := strings.Split(info, "\r\n")
 	i := &SentinelInfo{
 		Metrics: make(map[string]interface{}),
@@ -81,7 +81,7 @@ func parseInfo(info string, keys []string, includeMasters bool) *SentinelInfo {
 		fieldKey := split[0]
 		fieldValue := split[1]
 		if strings.HasPrefix(fieldKey, "master") && includeMasters {
-			master := pasreMasterInfo(fieldValue)
+			master := PasreMasterInfo(fieldValue)
 			i.Masters = append(i.Masters, master)
 			continue
 		}
@@ -89,7 +89,7 @@ func parseInfo(info string, keys []string, includeMasters bool) *SentinelInfo {
 			if key != fieldKey {
 				continue
 			}
-			i.Metrics[key] = parseValue(fieldValue)
+			i.Metrics[key] = ParseValue(fieldValue)
 		}
 	}
 	return i

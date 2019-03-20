@@ -8,7 +8,7 @@ DOCKER_IMAGE_NAME       ?= redis_sentinel_exporter
 DOCKER_IMAGE_TAG        ?= $(subst /,-,$(shell git rev-parse --abbrev-ref HEAD))
 
 
-all: format test build
+all: format test build test-report
 
 style:
 	@echo ">> checking code style"
@@ -16,7 +16,11 @@ style:
 
 test:
 	@echo ">> running tests"
-	@$(GO) test -short $(pkgs)
+	@$(GO) test -short $(pkgs) --cover
+
+test-report:
+	@echo ">> generating report"
+	@$(GO) test -coverprofile=coverage.out && go tool cover -html=coverage.out
 
 format:
 	@echo ">> formatting code"
