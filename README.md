@@ -18,4 +18,6 @@ Help on flags:
 
 ## Links
 
+* [Binary](https://github.com/leominov/redis_sentinel_exporter/releases)
+* [Docker Image](https://hub.docker.com/r/leominov/redis_sentinel_exporter)
 * [Grafana Dashboard](https://grafana.com/dashboards/9570)
