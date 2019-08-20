@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"bytes"
+	"io/ioutil"
+	"testing"
+)
 
 func TestParseValue(t *testing.T) {
 	cases := map[string]interface{}{
@@ -33,5 +37,35 @@ func TestPasreMasterInfo(t *testing.T) {
 	}
 	if masterA.Metrics["status"].(float64) != 1.0 {
 		t.Errorf("Must be 1.0, but got %v", masterA.Metrics["status"])
+	}
+}
+
+func TestParseInfo(t *testing.T) {
+	tests := []struct {
+		filename string
+		master   bool
+	}{
+		{
+			filename: "test_data/case-1",
+			master:   true,
+		},
+		{
+			filename: "test_data/case-2",
+		},
+	}
+	for _, test := range tests {
+		b, err := ioutil.ReadFile(test.filename)
+		if err != nil {
+			t.Fatal(err)
+		}
+		b = bytes.Replace(b, []byte("\n"), []byte("\r\n"), -1)
+		metricRequiredKeys := metricBuildInfo
+		for metricName := range metricMap {
+			metricRequiredKeys = append(metricRequiredKeys, metricName)
+		}
+		si := ParseInfo(string(b), metricRequiredKeys, test.master)
+		if si == nil {
+			t.Error("Must be an object, but got nil")
+		}
 	}
 }

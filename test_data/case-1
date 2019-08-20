@@ -1,0 +1,69 @@
+# Server
+redis_version:5.0.5
+redis_git_sha1:00000000
+redis_git_dirty:0
+redis_build_id:57b722a85448fb90
+redis_mode:sentinel
+os:Linux 4.9.125-linuxkit x86_64
+arch_bits:64
+multiplexing_api:epoll
+atomicvar_api:atomic-builtin
+gcc_version:6.3.0
+process_id:42
+run_id:5e64c2a7cf49ed7156f7a4f6b628a82e13e7a0bb
+tcp_port:26379
+uptime_in_seconds:47
+uptime_in_days:0
+hz:13
+configured_hz:10
+lru_clock:5993326
+executable:/opt/bitnami/redis-sentinel/bin/redis-sentinel
+config_file:/opt/bitnami/redis-sentinel/conf/sentinel.conf
+
+# Clients
+connected_clients:1
+client_recent_max_input_buffer:0
+client_recent_max_output_buffer:0
+blocked_clients:0
+
+# CPU
+used_cpu_sys:0.360000
+used_cpu_user:0.060000
+used_cpu_sys_children:0.000000
+used_cpu_user_children:0.000000
+
+# Stats
+total_connections_received:1
+total_commands_processed:0
+instantaneous_ops_per_sec:0
+total_net_input_bytes:14
+total_net_output_bytes:0
+instantaneous_input_kbps:0.00
+instantaneous_output_kbps:0.00
+rejected_connections:0
+sync_full:0
+sync_partial_ok:0
+sync_partial_err:0
+expired_keys:0
+expired_stale_perc:0.00
+expired_time_cap_reached_count:0
+evicted_keys:0
+keyspace_hits:0
+keyspace_misses:0
+pubsub_channels:0
+pubsub_patterns:0
+latest_fork_usec:0
+migrate_cached_sockets:0
+slave_expires_tracked_keys:0
+active_defrag_hits:0
+active_defrag_misses:0
+active_defrag_key_hits:0
+active_defrag_key_misses:0
+
+# Sentinel
+sentinel_masters:1
+sentinel_tilt:0
+sentinel_running_scripts:0
+sentinel_scripts_queue_length:0
+sentinel_simulate_failure_flags:0
+master0:name=mymaster,status=ok,address=172.19.0.2:6379,slaves=0,sentinels=1
