@@ -20,7 +20,7 @@ test:
 
 test-report:
 	@echo ">> generating report"
-	@$(GO) test -coverprofile=coverage.out && go tool cover -html=coverage.out
+	@$(GO) test -coverprofile=coverage.txt && go tool cover -html=coverage.txt
 
 format:
 	@echo ">> formatting code"
