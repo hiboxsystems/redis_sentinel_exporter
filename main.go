@@ -13,13 +13,14 @@ import (
 )
 
 var (
-	listenAddress = flag.String("web.listen-address", ":9355", "Address to listen on for web interface and telemetry.")
-	metricPath    = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
-	sentinelAddr  = flag.String("sentinel.addr", "redis://127.0.0.1:26379", "Redis Sentinel host:port")
-	isDebug       = flag.Bool("debug", false, "Output verbose debug information")
-	logFormat     = flag.String("log-format", "txt", "Log format, valid options are txt and json")
-	namespace     = flag.String("namespace", "redis_sentinel", "Namespace for metrics")
-	versionPrint  = flag.Bool("version", false, "Prints version and exit")
+	listenAddress     = flag.String("web.listen-address", ":9355", "Address to listen on for web interface and telemetry.")
+	metricPath        = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
+	sentinelAddr      = flag.String("sentinel.addr", "redis://127.0.0.1:26379", "Redis Sentinel host:port")
+	sentinelPassword  = flag.String("sentinel.password", "", "Redis Sentinel password (optional)")
+	isDebug           = flag.Bool("debug", false, "Output verbose debug information")
+	logFormat         = flag.String("log-format", "txt", "Log format, valid options are txt and json")
+	namespace         = flag.String("namespace", "redis_sentinel", "Namespace for metrics")
+	versionPrint      = flag.Bool("version", false, "Prints version and exit")
 )
 
 func main() {
@@ -48,7 +49,7 @@ func main() {
 		logrus.Fatal("Must specify a non-empty sentinel.addr")
 	}
 
-	exp := NewRedisSentinelExporter(*sentinelAddr, *namespace)
+	exp := NewRedisSentinelExporter(*sentinelAddr, *namespace, *sentinelPassword)
 
 	prometheus.MustRegister(exp)
 	http.Handle(*metricPath, promhttp.Handler())
