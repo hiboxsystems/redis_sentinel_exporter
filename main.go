@@ -13,14 +13,14 @@ import (
 )
 
 var (
-	listenAddress     = flag.String("web.listen-address", ":9355", "Address to listen on for web interface and telemetry.")
-	metricPath        = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
-	sentinelAddr      = flag.String("sentinel.addr", "redis://127.0.0.1:26379", "Redis Sentinel host:port")
-	sentinelPassword  = flag.String("sentinel.password", "", "Redis Sentinel password (optional)")
-	isDebug           = flag.Bool("debug", false, "Output verbose debug information")
-	logFormat         = flag.String("log-format", "txt", "Log format, valid options are txt and json")
-	namespace         = flag.String("namespace", "redis_sentinel", "Namespace for metrics")
-	versionPrint      = flag.Bool("version", false, "Prints version and exit")
+	listenAddress    = flag.String("web.listen-address", ":9355", "Address to listen on for web interface and telemetry.")
+	metricPath       = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
+	sentinelAddr     = flag.String("sentinel.addr", "redis://127.0.0.1:26379", "Redis Sentinel host:port")
+	sentinelPassword = flag.String("sentinel.password", "", "Redis Sentinel password (optional)")
+	isDebug          = flag.Bool("debug", false, "Output verbose debug information")
+	logFormat        = flag.String("log-format", "txt", "Log format, valid options are txt and json")
+	namespace        = flag.String("namespace", "redis_sentinel", "Namespace for metrics")
+	versionPrint     = flag.Bool("version", false, "Prints version and exit")
 )
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
 		logrus.SetFormatter(&logrus.TextFormatter{})
 	}
 
-	logrus.Infof("Starting Redis Sentine Exporter %s...", version.Version)
+	logrus.Infof("Starting Redis Sentinel Exporter %s...", version.Version)
 
 	if *isDebug {
 		logrus.SetLevel(logrus.DebugLevel)
@@ -57,7 +57,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`
 			<html>
-			<head><title>Redis Sentine Exporter ` + version.Version + `</title></head>
+			<head><title>Redis Sentinel Exporter ` + version.Version + `</title></head>
 			<body>
 			<h1>Redis Sentinel Exporter ` + version.Version + `</h1>
 			<p><a href='` + *metricPath + `'>Metrics</a></p>

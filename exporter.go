@@ -55,20 +55,20 @@ var (
 )
 
 type Exporter struct {
-	addr              string
-	namespace         string
-	sentinel_password string
-	metrics           map[string]*prometheus.GaugeVec
-	duration          prometheus.Gauge
-	scrapeErrors      prometheus.Gauge
-	totalScrapes      prometheus.Counter
+	addr             string
+	namespace        string
+	sentinelPassword string
+	metrics          map[string]*prometheus.GaugeVec
+	duration         prometheus.Gauge
+	scrapeErrors     prometheus.Gauge
+	totalScrapes     prometheus.Counter
 }
 
-func NewRedisSentinelExporter(addr, namespace string, sentinel_password string) *Exporter {
+func NewRedisSentinelExporter(addr, namespace string, sentinelPassword string) *Exporter {
 	e := &Exporter{
-		addr:      addr,
-		namespace: namespace,
-		sentinel_password: sentinel_password,
+		addr:             addr,
+		namespace:        namespace,
+		sentinelPassword: sentinelPassword,
 		duration: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
 			Name:      "exporter_last_scrape_duration_seconds",
@@ -140,7 +140,7 @@ func (e *Exporter) scrapeInfo() (string, error) {
 		redis.DialConnectTimeout(5 * time.Second),
 		redis.DialReadTimeout(5 * time.Second),
 		redis.DialWriteTimeout(5 * time.Second),
-		redis.DialPassword(e.sentinel_password),
+		redis.DialPassword(e.sentinelPassword),
 	}
 
 	logrus.Debugf("Trying DialURL(): %s", e.addr)
