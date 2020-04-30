@@ -1,6 +1,10 @@
+# IDE
+.vscode
+.idea
+
+# Output
 redis_sentinel_exporter
 coverage.txt
-
 bin/
 package/
 .build

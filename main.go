@@ -49,9 +49,10 @@ func main() {
 		logrus.Fatal("Must specify a non-empty sentinel.addr")
 	}
 
-	exp := NewRedisSentinelExporter(*sentinelAddr, *namespace, *sentinelPassword)
+	exporter := NewRedisSentinelExporter(*sentinelAddr, *namespace, *sentinelPassword)
 
-	prometheus.MustRegister(exp)
+	prometheus.MustRegister(exporter)
+	prometheus.MustRegister(version.NewCollector(*namespace))
 	http.Handle(*metricPath, promhttp.Handler())
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
