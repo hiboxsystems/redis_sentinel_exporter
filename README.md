@@ -10,14 +10,14 @@ This is a simple server that scrapes Redis Sentinel stats and exports them via H
 
 ## Configuration
 
-* `-debug` – Output verbose debug information. (env `DEBUG`)
-* `-log-format` – Log format, valid options are txt and json. (env `LOG_FORMAT`) (default `txt`)
-* `-namespace` – Namespace for metrics. (env `NAMESPACE`) (default `redis_sentinel")
-* `-sentinel.addr` – Redis Sentinel host:port. (env `SENTINEL_ADDR`) (default `redis://127.0.0.1:26379`)
-* `-sentinel.password` – Redis Sentinel password (env `SENTINEL_PASSWORD`) (optional).
+* `-debug` (env `DEBUG`) – Output verbose debug information.
+* `-log-format` (env `LOG_FORMAT`) – Log format, valid options are txt and json. (default `txt`)
+* `-namespace` (env `NAMESPACE`) – Namespace for metrics. (default `redis_sentinel")
+* `-sentinel.addr` (env `SENTINEL_ADDR`) – Redis Sentinel host:port. (default `redis://127.0.0.1:26379`)
+* `-sentinel.password` (env `SENTINEL_PASSWORD`) – Redis Sentinel password (optional).
 * `-version` – Prints version and exit.
-* `-web.listen-address` – Address to listen on for web interface and telemetry. (env `LISTEN_ADDRESS`) (default `:9355`)
-* `-web.telemetry-path` – Path under which to expose metrics. (env `TELEMETRY_PATH`) (default `/metrics`)
+* `-web.listen-address` (env `LISTEN_ADDRESS`) – Address to listen on for web interface and telemetry. (default `:9355`)
+* `-web.telemetry-path` (env `TELEMETRY_PATH`) – Path under which to expose metrics. (default `/metrics`)
 
 ## Links
 
