@@ -28,7 +28,7 @@ type Master struct {
 
 // Format:
 // name=mymaster,status=ok,address=172.17.8.101:6379,slaves=2,sentinels=3
-func PasreMasterInfo(info string) *Master {
+func ParseMasterInfo(info string) *Master {
 	split := strings.Split(info, ",")
 	m := &Master{
 		Metrics: make(map[string]interface{}),
@@ -81,7 +81,7 @@ func ParseInfo(info string, keys []string, includeMasters bool) *SentinelInfo {
 		fieldKey := split[0]
 		fieldValue := split[1]
 		if strings.HasPrefix(fieldKey, "master") && includeMasters {
-			master := PasreMasterInfo(fieldValue)
+			master := ParseMasterInfo(fieldValue)
 			i.Masters = append(i.Masters, master)
 			continue
 		}

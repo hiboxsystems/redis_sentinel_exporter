@@ -8,19 +8,16 @@
 
 This is a simple server that scrapes Redis Sentinel stats and exports them via HTTP for Prometheus consumption.
 
-## Getting Started
+## Configuration
 
-To run it:
-
-```
-./redis_sentinel_exporter [flags]
-```
-
-Help on flags:
-
-```
-./redis_sentinel_exporter --help
-```
+* `-debug` – Output verbose debug information. (env `DEBUG`)
+* `-log-format` – Log format, valid options are txt and json. (env `LOG_FORMAT`) (default `txt`)
+* `-namespace` – Namespace for metrics. (env `NAMESPACE`) (default `redis_sentinel")
+* `-sentinel.addr` – Redis Sentinel host:port. (env `SENTINEL_ADDR`) (default `redis://127.0.0.1:26379`)
+* `-sentinel.password` – Redis Sentinel password (env `SENTINEL_PASSWORD`) (optional).
+* `-version` – Prints version and exit.
+* `-web.listen-address` – Address to listen on for web interface and telemetry. (env `LISTEN_ADDRESS`) (default `:9355`)
+* `-web.telemetry-path` – Path under which to expose metrics. (env `TELEMETRY_PATH`) (default `/metrics`)
 
 ## Links
 

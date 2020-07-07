@@ -13,14 +13,14 @@ import (
 )
 
 var (
-	listenAddress    = flag.String("web.listen-address", ":9355", "Address to listen on for web interface and telemetry.")
-	metricPath       = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
-	sentinelAddr     = flag.String("sentinel.addr", "redis://127.0.0.1:26379", "Redis Sentinel host:port")
-	sentinelPassword = flag.String("sentinel.password", "", "Redis Sentinel password (optional)")
-	isDebug          = flag.Bool("debug", false, "Output verbose debug information")
-	logFormat        = flag.String("log-format", "txt", "Log format, valid options are txt and json")
-	namespace        = flag.String("namespace", "redis_sentinel", "Namespace for metrics")
-	versionPrint     = flag.Bool("version", false, "Prints version and exit")
+	isDebug          = flag.Bool("debug", GetBoolEnv("DEBUG", false), "Output verbose debug information.")
+	listenAddress    = flag.String("web.listen-address", GetStringEnv("LISTEN_ADDRESS", ":9355"), "Address to listen on for web interface and telemetry.")
+	logFormat        = flag.String("log-format", GetStringEnv("LOG_FORMAT", "txt"), "Log format, valid options are txt and json.")
+	metricPath       = flag.String("web.telemetry-path", GetStringEnv("TELEMETRY_PATH", "/metrics"), "Path under which to expose metrics.")
+	namespace        = flag.String("namespace", GetStringEnv("NAMESPACE", "redis_sentinel"), "Namespace for metrics.")
+	sentinelAddr     = flag.String("sentinel.addr", GetStringEnv("SENTINEL_ADDR", "redis://127.0.0.1:26379"), "Redis Sentinel host:port.")
+	sentinelPassword = flag.String("sentinel.password", GetStringEnv("SENTINEL_PASSWORD", ""), "Redis Sentinel password (optional).")
+	versionPrint     = flag.Bool("version", false, "Prints version and exit.")
 )
 
 func main() {
