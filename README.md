@@ -12,7 +12,7 @@ This is a simple server that scrapes Redis Sentinel stats and exports them via H
 
 * `-debug` (env `DEBUG`) – Output verbose debug information.
 * `-log-format` (env `LOG_FORMAT`) – Log format, valid options are txt and json. (default `txt`)
-* `-namespace` (env `NAMESPACE`) – Namespace for metrics. (default `redis_sentinel")
+* `-namespace` (env `NAMESPACE`) – Namespace for metrics. (default `redis_sentinel`)
 * `-sentinel.addr` (env `SENTINEL_ADDR`) – Redis Sentinel host:port. (default `redis://127.0.0.1:26379`)
 * `-sentinel.password` (env `SENTINEL_PASSWORD`) – Redis Sentinel password (optional).
 * `-version` – Prints version and exit.
