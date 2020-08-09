@@ -1,13 +1,18 @@
 language: go
+os: linux
+dist: xenial
+go: "1.14"
 
-go:
-  - "1.14"
-
-install:
-  - go get -t -v ./...
-
-script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - name: "Unit Tests"
+      script: go test -race -coverprofile=coverage.txt -covermode=atomic
+      after_success: bash <(curl -s https://codecov.io/bash)
+    - name: "E2E Tests - 6.0.6"
+      script: ./e2e.sh 6.0.6
+    - name: "E2E Tests - 5.0.9"
+      script: ./e2e.sh 5.0.9
+    - name: "E2E Tests - 4.0.14"
+      script: ./e2e.sh 4.0.14
+    - name: "E2E Tests - 3.2.13"
+      script: ./e2e.sh 3.2.13
