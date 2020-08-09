@@ -1,0 +1,37 @@
+# HELP redis_sentinel_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which redis_sentinel was built.
+# TYPE redis_sentinel_build_info gauge
+# HELP redis_sentinel_exporter_last_scrape_duration_seconds The last scrape duration.
+# TYPE redis_sentinel_exporter_last_scrape_duration_seconds gauge
+# HELP redis_sentinel_exporter_last_scrape_error The last scrape error status.
+# TYPE redis_sentinel_exporter_last_scrape_error gauge
+redis_sentinel_exporter_last_scrape_error 0
+# HELP redis_sentinel_exporter_scrapes_total Current total redis scrapes.
+# TYPE redis_sentinel_exporter_scrapes_total counter
+redis_sentinel_exporter_scrapes_total 1
+# HELP redis_sentinel_info Information about Sentinel
+# TYPE redis_sentinel_info gauge
+# HELP redis_sentinel_master_sentinels Sentinels of master
+# TYPE redis_sentinel_master_sentinels gauge
+redis_sentinel_master_sentinels{address="127.0.0.1:6379",name="mymaster"} 1
+# HELP redis_sentinel_master_slaves Slaves of master
+# TYPE redis_sentinel_master_slaves gauge
+redis_sentinel_master_slaves{address="127.0.0.1:6379",name="mymaster"} 0
+# HELP redis_sentinel_master_status Status of master
+# TYPE redis_sentinel_master_status gauge
+redis_sentinel_master_status{address="127.0.0.1:6379",name="mymaster"} 1
+# HELP redis_sentinel_masters masters
+# TYPE redis_sentinel_masters gauge
+redis_sentinel_masters 1
+# HELP redis_sentinel_process_id process_id
+# TYPE redis_sentinel_process_id gauge
+# HELP redis_sentinel_running_scripts running_scripts
+# TYPE redis_sentinel_running_scripts gauge
+redis_sentinel_running_scripts 0
+# HELP redis_sentinel_scripts_queue_length scripts_queue_length
+# TYPE redis_sentinel_scripts_queue_length gauge
+redis_sentinel_scripts_queue_length 0
+# HELP redis_sentinel_tilt tilt
+# TYPE redis_sentinel_tilt gauge
+redis_sentinel_tilt 0
+# HELP redis_sentinel_uptime_in_seconds uptime_in_seconds
+# TYPE redis_sentinel_uptime_in_seconds gauge
