@@ -9,3 +9,7 @@ bin/
 package/
 .build
 .tarballs/
+
+nohup.out
+/e2e-output.txt
+/redis-*
