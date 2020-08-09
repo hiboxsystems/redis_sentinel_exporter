@@ -4,16 +4,17 @@ set -x
 set -o pipefail
 set -o nounset
 
-version="$1"
+redis_version="$1"
+fixture_version="$2"
 skip_re="^(redis_sentinel_build_info|redis_sentinel_info|redis_sentinel_used_cpu|redis_sentinel_exporter_last_scrape_duration_seconds|redis_sentinel_uptime_in_seconds|redis_sentinel_connections_received_total|redis_sentinel_net|redis_sentinel_instantaneous|redis_sentinel_process_id)"
 
-echo "==> Redis $version"
+echo "==> Redis $redis_version"
 
-rm -rf "redis-${version}" "redis-${version}.tar.gz"
+rm -rf "redis-${redis_version}" "redis-${redis_version}.tar.gz"
 
-wget "http://download.redis.io/releases/redis-${version}.tar.gz"
-tar -zxvf "redis-${version}.tar.gz"
-cd "redis-${version}"
+wget "http://download.redis.io/releases/redis-${redis_version}.tar.gz"
+tar -zxvf "redis-${redis_version}.tar.gz"
+cd "redis-${redis_version}"
 make
 
 nohup ./src/redis-server &
@@ -42,5 +43,5 @@ nohup ./redis_sentinel_exporter &
 wget --retry-connrefused --tries=5 -O - "127.0.0.1:9355/metrics"| grep "redis_" | grep -E -v "${skip_re}" > "e2e-output.txt"
 
 diff -u \
-  "test_data/e2e-output.txt" \
+  "test_data/e2e-output-v${fixture_version}.txt" \
   "e2e-output.txt"

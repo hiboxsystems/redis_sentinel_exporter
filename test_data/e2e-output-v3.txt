@@ -1,0 +1,99 @@
+# HELP redis_sentinel_blocked_clients blocked_clients
+# TYPE redis_sentinel_blocked_clients gauge
+redis_sentinel_blocked_clients 0
+# HELP redis_sentinel_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which redis_sentinel was built.
+# TYPE redis_sentinel_build_info gauge
+# HELP redis_sentinel_client_biggest_input_buf client_biggest_input_buf
+# TYPE redis_sentinel_client_biggest_input_buf gauge
+redis_sentinel_client_biggest_input_buf 0
+# HELP redis_sentinel_client_longest_output_list client_longest_output_list
+# TYPE redis_sentinel_client_longest_output_list gauge
+redis_sentinel_client_longest_output_list 0
+# HELP redis_sentinel_commands_processed_total commands_processed_total
+# TYPE redis_sentinel_commands_processed_total gauge
+redis_sentinel_commands_processed_total 1
+# HELP redis_sentinel_connected_clients connected_clients
+# TYPE redis_sentinel_connected_clients gauge
+redis_sentinel_connected_clients 1
+# HELP redis_sentinel_connections_received_total connections_received_total
+# TYPE redis_sentinel_connections_received_total gauge
+# HELP redis_sentinel_evicted_keys_total evicted_keys_total
+# TYPE redis_sentinel_evicted_keys_total gauge
+redis_sentinel_evicted_keys_total 0
+# HELP redis_sentinel_expired_keys_total expired_keys_total
+# TYPE redis_sentinel_expired_keys_total gauge
+redis_sentinel_expired_keys_total 0
+# HELP redis_sentinel_exporter_last_scrape_duration_seconds The last scrape duration.
+# TYPE redis_sentinel_exporter_last_scrape_duration_seconds gauge
+# HELP redis_sentinel_exporter_last_scrape_error The last scrape error status.
+# TYPE redis_sentinel_exporter_last_scrape_error gauge
+redis_sentinel_exporter_last_scrape_error 0
+# HELP redis_sentinel_exporter_scrapes_total Current total redis scrapes.
+# TYPE redis_sentinel_exporter_scrapes_total counter
+redis_sentinel_exporter_scrapes_total 1
+# HELP redis_sentinel_info Information about Sentinel
+# TYPE redis_sentinel_info gauge
+# HELP redis_sentinel_instantaneous_input_kbps instantaneous_input_kbps
+# TYPE redis_sentinel_instantaneous_input_kbps gauge
+# HELP redis_sentinel_instantaneous_ops_per_sec instantaneous_ops_per_sec
+# TYPE redis_sentinel_instantaneous_ops_per_sec gauge
+# HELP redis_sentinel_instantaneous_output_kbps instantaneous_output_kbps
+# TYPE redis_sentinel_instantaneous_output_kbps gauge
+# HELP redis_sentinel_keyspace_hits_total keyspace_hits_total
+# TYPE redis_sentinel_keyspace_hits_total gauge
+redis_sentinel_keyspace_hits_total 0
+# HELP redis_sentinel_keyspace_misses_total keyspace_misses_total
+# TYPE redis_sentinel_keyspace_misses_total gauge
+redis_sentinel_keyspace_misses_total 0
+# HELP redis_sentinel_latest_fork_usec latest_fork_usec
+# TYPE redis_sentinel_latest_fork_usec gauge
+redis_sentinel_latest_fork_usec 0
+# HELP redis_sentinel_master_sentinels Sentinels of master
+# TYPE redis_sentinel_master_sentinels gauge
+redis_sentinel_master_sentinels{address="127.0.0.1:6379",name="mymaster"} 1
+# HELP redis_sentinel_master_slaves Slaves of master
+# TYPE redis_sentinel_master_slaves gauge
+redis_sentinel_master_slaves{address="127.0.0.1:6379",name="mymaster"} 0
+# HELP redis_sentinel_master_status Status of master
+# TYPE redis_sentinel_master_status gauge
+redis_sentinel_master_status{address="127.0.0.1:6379",name="mymaster"} 1
+# HELP redis_sentinel_masters masters
+# TYPE redis_sentinel_masters gauge
+redis_sentinel_masters 1
+# HELP redis_sentinel_net_input_bytes_total net_input_bytes_total
+# TYPE redis_sentinel_net_input_bytes_total gauge
+# HELP redis_sentinel_net_output_bytes_total net_output_bytes_total
+# TYPE redis_sentinel_net_output_bytes_total gauge
+# HELP redis_sentinel_process_id process_id
+# TYPE redis_sentinel_process_id gauge
+# HELP redis_sentinel_pubsub_channels pubsub_channels
+# TYPE redis_sentinel_pubsub_channels gauge
+redis_sentinel_pubsub_channels 0
+# HELP redis_sentinel_pubsub_patterns pubsub_patterns
+# TYPE redis_sentinel_pubsub_patterns gauge
+redis_sentinel_pubsub_patterns 0
+# HELP redis_sentinel_rejected_connections_total rejected_connections_total
+# TYPE redis_sentinel_rejected_connections_total gauge
+redis_sentinel_rejected_connections_total 0
+# HELP redis_sentinel_running_scripts running_scripts
+# TYPE redis_sentinel_running_scripts gauge
+redis_sentinel_running_scripts 0
+# HELP redis_sentinel_scripts_queue_length scripts_queue_length
+# TYPE redis_sentinel_scripts_queue_length gauge
+redis_sentinel_scripts_queue_length 0
+# HELP redis_sentinel_simulate_failure_flags simulate_failure_flags
+# TYPE redis_sentinel_simulate_failure_flags gauge
+redis_sentinel_simulate_failure_flags 0
+# HELP redis_sentinel_tilt tilt
+# TYPE redis_sentinel_tilt gauge
+redis_sentinel_tilt 0
+# HELP redis_sentinel_uptime_in_seconds uptime_in_seconds
+# TYPE redis_sentinel_uptime_in_seconds gauge
+# HELP redis_sentinel_used_cpu_sys used_cpu_sys
+# TYPE redis_sentinel_used_cpu_sys gauge
+# HELP redis_sentinel_used_cpu_sys_children used_cpu_sys_children
+# TYPE redis_sentinel_used_cpu_sys_children gauge
+# HELP redis_sentinel_used_cpu_user used_cpu_user
+# TYPE redis_sentinel_used_cpu_user gauge
+# HELP redis_sentinel_used_cpu_user_children used_cpu_user_children
+# TYPE redis_sentinel_used_cpu_user_children gauge
