@@ -16,3 +16,5 @@ jobs:
       script: ./e2e.sh 4.0.14 3
     - name: "E2E Tests - 3.2.13"
       script: ./e2e.sh 3.2.13 3
+    - name: "E2E Tests - 3.0.7"
+      script: ./e2e.sh 3.0.7 3
