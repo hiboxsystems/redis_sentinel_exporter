@@ -19,27 +19,41 @@ make
 
 nohup ./src/redis-server &
 
+success="0"
 for i in {1..5} ; do
   if ./src/redis-cli -p 6379 PING; then
+    success="1"
     break
   fi
   sleep 1
 done
+
+if [[ $success == "0" ]]; then
+  echo "Redis PING failed"
+  exit 1
+fi
 
 cp ../test_data/sentinel.conf sentinel.conf
 nohup ./src/redis-sentinel sentinel.conf &
 
+success="0"
 for i in {1..5} ; do
   if ./src/redis-cli -p 26379 PING; then
+    success="1"
     break
   fi
   sleep 1
 done
 
+if [[ $success == "0" ]]; then
+  echo "Redis Sentinel PING failed"
+  exit 1
+fi
+
 cd ../
 
 go build
-nohup ./redis_sentinel_exporter &
+nohup ./redis_sentinel_exporter --debug &
 wget --retry-connrefused --tries=5 -O - "127.0.0.1:9355/metrics"| grep "redis_" | grep -E -v "${skip_re}" > "e2e-output.txt"
 
 diff -u \
