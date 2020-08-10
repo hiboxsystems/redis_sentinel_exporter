@@ -15,7 +15,8 @@ build:
     -X github.com/prometheus/common/version.BuildDate={{date "20060102-15:04:05"}}
 tarball:
   files:
-    - LICENSE
+    - LICENSE.md
+    - README.md
 crossbuild:
   platforms:
     - linux/amd64
