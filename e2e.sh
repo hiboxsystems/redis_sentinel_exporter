@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Usage:   ./e2e.sh ${RedisVersion} ${FixtureVersion} ${PasswordProtected}
+# Example: ./e2e.sh 6.0.6 5.0 1
 
 set -x
 set -o pipefail
