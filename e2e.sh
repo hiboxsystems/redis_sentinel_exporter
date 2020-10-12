@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Usage:   ./e2e.sh ${RedisVersion} ${FixtureVersion} ${PasswordProtected}
-# Example: ./e2e.sh 6.0.6 5.0 1
+# Usage:   ./e2e.sh ${RedisVersion} ${FixtureVersion} ${PasswordProtected} ${PasswordFromFile}
+# Example: ./e2e.sh 6.0.6 5.0 1 0
 
 set -x
 set -o pipefail
@@ -9,6 +9,8 @@ set -o nounset
 redis_version="$1"
 fixture_version="$2"
 require_pass="$3"
+pass_from_file="$4"
+
 skip_re="^(redis_sentinel_build_info|redis_sentinel_info|redis_sentinel_used_cpu|redis_sentinel_exporter_last_scrape_duration_seconds|redis_sentinel_uptime_in_seconds|redis_sentinel_connections_received_total|redis_sentinel_net|redis_sentinel_instantaneous|redis_sentinel_process_id)"
 
 echo "==> Redis $redis_version"
@@ -66,7 +68,12 @@ go build
 if [[ $require_pass == "0" ]]; then
   nohup ./redis_sentinel_exporter --debug &
 else
-  nohup ./redis_sentinel_exporter --debug --sentinel.password=ABCD &
+  if [[ $pass_from_file == "0" ]]; then
+    nohup ./redis_sentinel_exporter --debug --sentinel.password=ABCD &
+  else
+    echo "ABCD" > /tmp/sentinel_password.txt
+    nohup ./redis_sentinel_exporter --debug --sentinel.password-file=/tmp/sentinel_password.txt &
+  fi
 fi
 
 wget --retry-connrefused --tries=5 -O - "127.0.0.1:9355/metrics"| grep "redis_" | grep -E -v "${skip_re}" > "e2e-output.txt"

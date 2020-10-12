@@ -15,6 +15,7 @@ This is a simple server that scrapes Redis Sentinel stats and exports them via H
 * `-namespace` (env `NAMESPACE`) – Namespace for metrics. (default `redis_sentinel`)
 * `-sentinel.addr` (env `SENTINEL_ADDR`) – Redis Sentinel host:port. (default `redis://127.0.0.1:26379`)
 * `-sentinel.password` (env `SENTINEL_PASSWORD`) – Redis Sentinel password (optional).
+* `-sentinel.password-file` (env `SENTINEL_PASSWORD_FILE`) - Path to Redis Sentinel password file (optional).
 * `-version` – Prints version and exit.
 * `-web.listen-address` (env `LISTEN_ADDRESS`) – Address to listen on for web interface and telemetry. (default `:9355`)
 * `-web.telemetry-path` (env `TELEMETRY_PATH`) – Path under which to expose metrics. (default `/metrics`)
