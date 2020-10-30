@@ -64,7 +64,12 @@ func main() {
 	exporter := NewRedisSentinelExporter(*sentinelAddr, *namespace, password)
 
 	prometheus.MustRegister(exporter)
+
+	// Deprecated
 	prometheus.MustRegister(version.NewCollector(*namespace))
+	versionNamespace := *namespace + "_exporter"
+	prometheus.MustRegister(version.NewCollector(versionNamespace))
+
 	http.Handle(*metricPath, promhttp.Handler())
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
