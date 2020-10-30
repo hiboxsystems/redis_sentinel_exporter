@@ -1,5 +1,7 @@
 # HELP redis_sentinel_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which redis_sentinel was built.
 # TYPE redis_sentinel_build_info gauge
+# HELP redis_sentinel_exporter_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which redis_sentinel_exporter was built.
+# TYPE redis_sentinel_exporter_build_info gauge
 # HELP redis_sentinel_exporter_last_scrape_duration_seconds The last scrape duration.
 # TYPE redis_sentinel_exporter_last_scrape_duration_seconds gauge
 # HELP redis_sentinel_exporter_last_scrape_error The last scrape error status.
