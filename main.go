@@ -65,7 +65,8 @@ func main() {
 
 	prometheus.MustRegister(exporter)
 
-	// Deprecated
+	// Deprecated and will be removed in a future version,
+	// use `redis_sentinel_exporter_build_info`
 	prometheus.MustRegister(version.NewCollector(*namespace))
 	versionNamespace := *namespace + "_exporter"
 	prometheus.MustRegister(version.NewCollector(versionNamespace))
