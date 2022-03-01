@@ -9,4 +9,4 @@ crossbuild_tarballs:
 	promu crossbuild tarballs
 
 release:
-	promu release
+	promu release .tarballs
