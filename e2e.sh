@@ -2,6 +2,7 @@
 # Usage:   ./e2e.sh ${RedisVersion} ${FixtureVersion} ${PasswordProtected} ${PasswordFromFile}
 # Example: ./e2e.sh 6.0.6 5.0 1 0
 
+set -e
 set -x
 set -o pipefail
 set -o nounset
@@ -19,13 +20,14 @@ rm -rf "redis-${redis_version}" "redis-${redis_version}.tar.gz"
 
 wget "http://download.redis.io/releases/redis-${redis_version}.tar.gz"
 tar -zxvf "redis-${redis_version}.tar.gz"
-cd "redis-${redis_version}"
+cd "redis-${redis_version}" || exit
 make
 
 nohup ./src/redis-server &
 
 success="0"
-for i in {1..5} ; do
+for i in {1..5}; do
+  echo "Run test nr: $i"
   if ./src/redis-cli -p 6379 PING; then
     success="1"
     break
@@ -48,7 +50,8 @@ cat sentinel.conf
 nohup ./src/redis-sentinel sentinel.conf &
 
 success="0"
-for i in {1..5} ; do
+for i in {1..5}; do
+  echo "Run test nr: $i"
   if ./src/redis-cli -p 26379 PING; then
     success="1"
     break

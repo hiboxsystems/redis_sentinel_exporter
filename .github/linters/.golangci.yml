@@ -1,0 +1,12 @@
+---
+# configure golangci-lint
+# see https://golangci-lint.run/usage/configuration
+
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+linters-settings:
+  govet:
+    # report about shadowed variables
+    check-shadowing: false

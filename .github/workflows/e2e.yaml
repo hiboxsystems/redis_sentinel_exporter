@@ -1,0 +1,16 @@
+---
+name: E2E
+
+on: pull_request
+
+jobs:
+  docker:
+    name: E2E
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v3
+
+      - name: E2E
+        run: ./e2e.sh 6.0.6 5.0 1 0
+

@@ -1,11 +1,5 @@
 # Redis Sentinel Exporter for Prometheus
 
-[![BuildStatus Widget]][BuildStatus Result]
-[![codecov](https://codecov.io/gh/leominov/redis_sentinel_exporter/branch/master/graph/badge.svg)](https://codecov.io/gh/leominov/redis_sentinel_exporter)
-
-[BuildStatus Result]: https://travis-ci.com/leominov/redis_sentinel_exporter
-[BuildStatus Widget]: https://travis-ci.com/leominov/redis_sentinel_exporter.svg?branch=master
-
 This is a simple server that scrapes Redis Sentinel stats and exports them via HTTP for Prometheus consumption.
 
 ## Configuration
@@ -25,3 +19,18 @@ This is a simple server that scrapes Redis Sentinel stats and exports them via H
 * [Binary](https://github.com/leominov/redis_sentinel_exporter/releases)
 * [Docker Image](https://hub.docker.com/r/leominov/redis_sentinel_exporter)
 * [Grafana Dashboard](https://grafana.com/dashboards/9570)
+
+## Forked from
+
+* <https://github.com/hiboxsystems/redis_sentinel_exporter>
+* <https://github.com/leominov/redis_sentinel_exporter>
+
+## Docker
+
+Images are pushed to <https://hub.docker.com/repository/docker/monotek/redis-sentinel-exporter>
+
+Run via:
+
+```bash
+docker run -it --rm -p 9355:9355 monotek/redis-sentinel-exporter
+```
